@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 
 class Chess {
-	static int[,] Board = new int[10,10];
+	static int wk, wq, wkr, wqr, wkb, wqb, wkn, wqn, wp1, wp2, wp3, wp4, wp5, wp6, wp7, wp8;
+	static int bk, bq, bkr, bqr, bkb, bqb, bkn, bqn, bp1, bp2, bp3, bp4, bp5, bp6, bp7, bp8;
+	static int[,] Board = new int[10, 10];
 	static int PieceMove;
 	static int MoveCount;
 	static bool Turn = true; // T=White, F=Black
@@ -33,9 +35,7 @@ class Chess {
 		while(InputChecker){
 			UserInput = Console.ReadLine();
 			if(SuitMove(UserInput)){
-				InputChecker = !InputChecker; // Correct input
-				Board[UserInput[2] - '`', UserInput[3] - '0'] = Board[UserInput[0] - '`', UserInput[1] - '0'];
-				Board[UserInput[0] - '`', UserInput[1] - '0'] = 0;
+				InputChecker = !InputChecker; // Correct InputChecker
 				Turn = !Turn;
 				if(Turn) MoveCount++;
 				CurrentSystemMessage = "Move : ";
@@ -46,13 +46,16 @@ class Chess {
 		}
 	}
 
-	static bool SuitMove(string move){
+	static bool SuitMove(string Move){
 		try{
-			switch (Board[move[0] - '`', move[1] - '0'] / 10){	// check turn
+			int Now = Board[Move[0] - '`', Move[1] - '0'];
+			int Next = Board[Move[2] - '`', Move[3] - '0'];
+			switch (Now / 10){	// check turn
 				case 0 :
 					return false;
 				case 1 :
 					if(!Turn) return false;
+					
 					break;
 				case 2 :
 					if(Turn) return false;
@@ -65,22 +68,54 @@ class Chess {
 		}
 	}
 
+	static bool CheckPiece(int Now, int Next, string Move, bool Turn){
+		switch (Now % 10){
+			case 1 :																		// King
+
+				break;
+			case 2 :																		// Queen
+				break;
+			case 3 :																		// Rook
+				break;
+			case 4 :																		// Bishop
+				break;
+			case 5 :																		// Knight
+				break;
+			case 6 :																		// Pawn
+				break;
+		}
+		return false;
+	}
+
 	static void GameSet(){
-		Board[1, 1] = Board[8, 1] = 13;								// Rook
-		Board[2, 1] = Board[7, 1] = 15;								// Knight
-		Board[3, 1] = Board[6, 1] = 14;								// Bishop
-		Board[4, 1] = 12;															// Queen
-		Board[5, 1] = 11;															// King
-		for(int i = 1; i < 9; i++) Board[i, 2] = 16;	// Pawn
-		Board[1, 8] = Board[8, 8] = 23;
-		Board[2, 8] = Board[7, 8] = 25;
-		Board[3, 8] = Board[6, 8] = 24;
-		Board[4, 8] = 22;
-		Board[5, 8] = 21;
-		for(int i = 1; i < 9; i++) Board[i, 7] = 26;
+		wk = 51;	wq = 41;	wkr = 81;	wqr = 11;
+		wkb = 61;	wqb = 31;	wkn = 71;	wqn = 21;
+		wp1 = 12; wp2 = 22; wp3 = 32; wp4 = 42;
+		wp5 = 52; wp6 = 62; wp7 = 72; wp8 = 82;
+
+		bk = 58;	bq = 48;	bkr = 88;	bqr = 18;
+		bkb = 68;	bqb = 38;	bkn = 78;	bqn = 28;
+		bp1 = 17; bp2 = 27; bp3 = 37; bp4 = 47;
+		bp5 = 57; bp6 = 67; bp7 = 77; bp8 = 87;
+	}
+
+	static void GetBoardInfo(){
+		for(int i = 0; i < 10; i++){
+			for(int j = 0; j < 10; j++) Board[i, j] = 0;
+		}
+		Board[wk / 10, wk % 10] = 11;	Board[wq / 10, wq % 10] = 12;	Board[wkr / 10, wkr % 10] = 13;	Board[wqr / 10, wqr % 10] = 13;
+		Board[wkb / 10, wkb % 10] = 14;	Board[wqb / 10, wqb % 10] = 14;	Board[wkn / 10, wkn % 10] = 15;	Board[wqn / 10, wqn % 10] = 15;
+		Board[wp1 / 10, wp1 % 10] = 16;	Board[wp2 / 10, wp2 % 10] = 16;	Board[wp3 / 10, wp3 % 10] = 16;	Board[wp4 / 10, wp4 % 10] = 16;
+		Board[wp5 / 10, wp5 % 10] = 16;	Board[wp6 / 10, wp6 % 10] = 16;	Board[wp7 / 10, wp7 % 10] = 16;	Board[wp8 / 10, wp8 % 10] = 16;
+
+		Board[bk / 10, bk % 10] = 21;	Board[bq / 10, bq % 10] = 22;	Board[bkr / 10, bkr % 10] = 23;	Board[bqr / 10, bqr % 10] = 23;
+		Board[bkb / 10, bkb % 10] = 24;	Board[bqb / 10, bqb % 10] = 24;	Board[bkn / 10, bkn % 10] = 25;	Board[bqn / 10, bqn % 10] = 25;
+		Board[bp1 / 10, bp1 % 10] = 26;	Board[bp2 / 10, bp2 % 10] = 26;	Board[bp3 / 10, bp3 % 10] = 26;	Board[bp4 / 10, bp4 % 10] = 26;
+		Board[bp5 / 10, bp5 % 10] = 26;	Board[bp6 / 10, bp6 % 10] = 26;	Board[bp7 / 10, bp7 % 10] = 26;	Board[bp8 / 10, bp8 % 10] = 26;
 	}
 
 	static void DrawBoard(){
+		GetBoardInfo();
 		Console.Clear();
 		Console.ResetColor();
 		Console.Write(Turn ? "  White Move" : "  Black Move");
