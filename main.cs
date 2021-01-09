@@ -19,6 +19,7 @@ class Chess {
 		MoveCount = 1;
 		GameSet();
 		DrawBoard();
+		CurrentSystemMessage = "Move : ";
 		while(!Gameover){
 			GetMove();
 		}
@@ -26,7 +27,7 @@ class Chess {
 
 
 	static void GetMove(){
-		CurrentSystemMessage = "Move : ";
+		DrawBoard();
 		Console.Write(CurrentSystemMessage);
 		bool InputChecker = true;
 		while(InputChecker){
@@ -37,23 +38,29 @@ class Chess {
 				Board[UserInput[0] - '`', UserInput[1] - '0'] = 0;
 				Turn = !Turn;
 				if(Turn) MoveCount++;
+				CurrentSystemMessage = "Move : ";
 			}
 			else CurrentSystemMessage = "System>\nInput isn't accepted. Please check your input.\nMove : ";
-			Console.Write(CurrentSystemMessage);
 			DrawBoard();
+			Console.Write(CurrentSystemMessage);
 		}
 	}
 
 	static bool SuitMove(string move){
 		try{
-			if(move[0] < 'a' || move[0] > 'h' || move[2] < 'a' || move[2] > 'h') return false;
-			else if(move[1] < '1' || move[1] > '8' || move[3] <'1' || move[3] > '8') return false;
-			else return true;
+			switch (Board[move[0] - '`', move[1] - '0'] / 10){	// check turn
+				case 0 :
+					return false;
+				case 1 :
+					if(!Turn) return false;
+					break;
+				case 2 :
+					if(Turn) return false;
+					break;
+			}
+			return true;
 		}
-
 		catch(Exception ex){
-			Console.Write(ex.Message);
-			Console.ReadLine();
 			return false;
 		}
 	}
