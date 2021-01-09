@@ -50,6 +50,7 @@ class Chess {
 			else if(move[1] < '1' || move[1] > '8' || move[3] <'1' || move[3] > '8') return false;
 			else return true;
 		}
+
 		catch(Exception ex){
 			Console.Write(ex.Message);
 			Console.ReadLine();
